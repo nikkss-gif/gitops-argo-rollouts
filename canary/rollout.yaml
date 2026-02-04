@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: canary-demo
+  namespace: rollouts-demo
 spec:
   replicas: 4
   selector:
@@ -20,9 +21,15 @@ spec:
 
   strategy:
     canary:
+      analysis:
+        templates:
+        - templateName: success-rate-check
       steps:
       - setWeight: 20
-      - pause: { duration: 30 }
+      - pause:
+          duration: "30s"
       - setWeight: 50
-      - pause: { duration: 30 }
+      - pause:
+          duration: "30s"
       - setWeight: 100
+
